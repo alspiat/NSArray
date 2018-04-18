@@ -17,6 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Create own autorelease pool
+    @autoreleasepool {
+    
     // Create NSArray, containing several strings, using literal declaration.
     NSArray *array = @[@"One", @"Two", @"Three", @"Four"];
     
@@ -61,6 +64,8 @@
     NSLog(@"Array: %p", newArray[0]);
     NSLog(@"Shallow copy: %p", shallowCopy[0]);
     NSLog(@"Real deep copy: %p", realDeepCopy[0]);
+        
+    [shallowCopy release];
     
     // Iterate over array and obtain item at index 13. Print an item.
     [newArray enumerateObjectsUsingBlock:^(NSString* obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -100,12 +105,8 @@
     NSArray *numberArray = @[@56, @24.25, @37, @41, @24.98, @60, @7];
 
     // Sort it in an ascending order
-    NSArray *ascendingOrderArray = [numberArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        if (obj1 < obj2) {
-            return (NSComparisonResult)NSOrderedAscending;
-        } else {
-            return (NSComparisonResult)NSOrderedDescending;
-        }
+    NSArray *ascendingOrderArray = [numberArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2];
     }];
     
     for (NSString *string in ascendingOrderArray) {
@@ -113,16 +114,14 @@
     }
     
     // Sort it in a descending order
-    NSArray *descendingOrderArray = [numberArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        if (obj1 > obj2) {
-            return (NSComparisonResult)NSOrderedAscending;
-        } else {
-            return (NSComparisonResult)NSOrderedDescending;
-        }
+    NSArray *descendingOrderArray = [numberArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj2 compare:obj1];
     }];
     
     for (NSString *string in descendingOrderArray) {
         NSLog(@"%@", string);
+    }
+        
     }
     
 }
